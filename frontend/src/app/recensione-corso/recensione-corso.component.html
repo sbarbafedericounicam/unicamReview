@@ -1,0 +1,46 @@
+<p class="h3 text-center">Recensione Corso</p>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+
+    <div *ngIf="authService.currentUserSig()" class="col-md-6">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-5">
+        <div class="form-group">
+          <label for="corso_di_studio_id" class="fw-bold">Corso</label>
+          <input type="number" class="form-control" id="corso_di_studio_id" placeholder="Inserisci ID Corso" formControlName="corso_di_studio_id">
+        </div>
+
+        <div class="form-group mt-3">
+          <label for="voto" class="fw-bold">Voto</label>
+          <input type="number" class="form-control" id="voto" placeholder="Inserisci Voto" formControlName="voto">
+        </div>
+
+        <div class="form-group mt-3">
+          <label for="testo" class="fw-bold">Testo Recensione</label>
+          <textarea type="text" class="form-control" id="testo" placeholder="Scrivi la tua Recensione" formControlName="testo" rows="5"></textarea>
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button type="submit" class="btn btn-primary">Pubblica Recensione</button>
+        </div>
+
+        <div *ngIf="erroreRecensione" class="alert alert-danger mt-3" role="alert">
+          <p class="text-white">{{ erroreRecensione }}</p>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="authService.currentUserSig() === null" class="col-md-6">
+      <div class="alert alert-warning" role="alert">
+        <h1 class="text-center">Effettua l'Accesso/Registrazione per Pubblicare una Recensione</h1>
+        <div class="d-flex justify-content-center mt-3">
+          <a routerLink="/login" class="btn btn-success">Accedi</a>
+          <a routerLink="/register" class="btn btn-info">Registrati</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    

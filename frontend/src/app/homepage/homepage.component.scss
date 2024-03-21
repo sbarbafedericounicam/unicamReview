@@ -1,0 +1,41 @@
+.hero .bolla {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  
+  .hero .bolla:nth-child(1) {
+    left: 20%;
+  }
+  
+  .hero .bolla:nth-child(2) {
+    left: 40%;
+  }
+  
+  .hero .bolla:nth-child(3) {
+    left: 60%;
+  }
+  
+  .hero .bolla:nth-child(4) {
+    top: 30%;
+    left: 20%;
+  }
+  
+  .hero .bolla:nth-child(5) {
+    top: 30%;
+    left: 60%;
+  }
+  
+  /* Dati nelle bolle */
+  .hero .bolla .dato {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .hero .bolla .dato span {
+    color: #2196F3;
+  }

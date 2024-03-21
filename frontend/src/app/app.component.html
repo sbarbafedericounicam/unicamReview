@@ -1,0 +1,22 @@
+
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+      <img src="https://www.unicam.it/themes/custom/italiagov/unicam/webp/logo.webp" width="50" height="50" class="d-inline-block align-top" alt="">
+      UnicamReview
+    </a>
+    <a routerLink="/" class="navbar-brand">Home</a> 
+    <a routerLink="/corsi" class="navbar-brand">Corsi</a>
+    @if(authService.currentUserSig()==null){
+      <a routerLink="/login"  class="navbar-brand">Accedi</a>
+      <a routerLink="/register"  class="navbar-brand">Registrati</a>
+    }
+    @if(authService.currentUserSig()){
+      <span class="navbar-brand">
+        <a routerLink="/recensione-corso"  class="navbar-brand">Recensisci corso</a>
+        <a routerLink="/recensione-materia"  class="navbar-brand">Recensisci materia</a></span>
+        {{authService.currentUserSig()?.username}}
+        <span (click)="logout()" class="navbar-brand">Logout</span>
+    }
+</nav>
+
+<router-outlet></router-outlet>

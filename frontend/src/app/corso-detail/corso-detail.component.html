@@ -1,0 +1,56 @@
+<br><div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Dettagli del Corso</h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>NOME:</strong> {{dettaglio?.nome}}</li>
+            <li class="list-group-item"><strong>DESCRIZIONE:</strong> {{dettaglio?.descrizione}}</li>
+            <li class="list-group-item"><strong>DURATA:</strong> {{dettaglio?.durata}}</li>
+            <li class="list-group-item"><strong>MEDIA VOTI:</strong> {{dettaglio?.media_voti}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Materia</th>
+                <th scope="col">Anno</th>
+                <th scope="col">CFU</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let materia of dettaglio?.materie" routerLink="/materia-detail/{{materia.id}}">  
+                <td>{{materia.nome_materia}}</td>
+                <td>{{materia.anno}} </td>
+                <td>{{materia.CFU}} </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <hr>
+  
+  <h1 class="mb-4">Recensioni</h1>
+  <div class="card">
+    <div class="card-body">
+      <div *ngFor="let recensione of dettaglio?.recensioniCorso" class="mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div><strong>{{recensione.username}} </strong><span class="badge bg-primary rounded-pill">{{recensione.Voto}}/5</span></div>  
+        </div>
+        <div>{{recensione.testo}}</div><hr>
+      </div>
+    </div>
+  </div>
+</div>
