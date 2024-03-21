@@ -28,6 +28,8 @@ Cliccando su una delle materie è possibile entrare nella pagina di dettaglio de
 - Dettagli della materia (nome, descrizione, durata, media dei voti delle recensioni della materia).
 - Recensioni della materia, dove sono presenti tutte le recensioni della materia (username dell'utente che ha effettuato la recensione, voto da 1 a 5, e testo della recensione).
 
+Ovviamente l'utente non potrà recensire più di una volta una stessa materia/corso.
+
 #### In parole povere:
 
 L'utente può vedere statistiche riguardo all'università, la lista dei corsi, la pagina per ogni corso (dettagli, materie, recensioni del corso fatte dagli utenti), la pagina per ogni materia (dettagli e recensioni del corso fatte dagli utenti). Registrandosi/accedendo potrà effettuare delle recensioni (voto 1-5 e testo al corso di studio o alle materie del corso di studio che frequenta).
@@ -38,7 +40,8 @@ Il database è stato realizzato in MySQL tramite MySQL Workbench, il backend in 
 
 #### Future modifiche:
 
-- Aggiunta della pagina personale dell'utente.
+- Aggiunta della pagina personale dell'utente dove poter vedere/eliminare le proprie recensioni.
+- Possibilità di fare recensioni del corso e delle materie direttamente dalla pagina di dettaglio del corso/ delle materie, evitando di dover mettere manualmente l'id del corso/materia (cosa molto brutta da sistemare)
 - Aggiunta del ruolo di admin, con una pagina personale dove potere creare/modificare/eliminare corsi e materie (non assicurato).
 - Video dimostrativo.
 - Pubblicazione dello script per la creazione delle tabelle nel DB e delle insert di esempio per corsi, materie, recensioni...
