@@ -1,0 +1,62 @@
+<p class="h3 text-center">Aggiungi Materia</p>
+
+@if(!admin || admin.isAdmin===false){
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="row justify-content-center">
+        <div class="alert alert-warning">
+          <p class="h5 text-center">Questa funzione è riservata agli amministratori</p>
+      </div>
+    </div>
+  </div>
+  </div>
+}
+
+
+  @if(admin.isAdmin===true){
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+
+      <div *ngIf="authService.currentUserSig()" class="col-md-6">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-5">
+          <div class="form-group">
+            <label for="corso_di_studio_id" class="fw-bold">Nome</label>
+            <input type="text" class="form-control" id="nome" placeholder="Inserisci nome Materia" formControlName="nome">
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="anno" class="fw-bold">Anno</label>
+            <input type="number" class="form-control" id="anno" placeholder="Inserisci Anno" formControlName="anno">
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="CFU" class="fw-bold">CFU</label>
+            <input type="number" class="form-control" id="CFU" placeholder="Inserisci CFU" formControlName="CFU">
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="testo" class="fw-bold">Descrizione</label>
+            <textarea type="text" class="form-control" id="descrizione" placeholder="Scrivi la Descrizione" formControlName="descrizione" rows="5"></textarea>
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="testo" class="fw-bold">Corso</label>
+            <select formControlName="corso_di_studio_id">
+              <option *ngFor="let corso of corsi" [ngValue]="corso.id">
+                {{ corso.nome }}
+              </option>
+            </select>
+          </div>
+
+          <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-primary">Pubblica Materia</button>
+          </div>
+
+          <div *ngIf="erroreNuovoMateria" class="alert alert-danger mt-3" role="alert">
+            <p class="text-white">{{ erroreNuovoMateria }}</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

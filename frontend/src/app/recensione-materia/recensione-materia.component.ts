@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { RecensioneService } from '../recensione.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CorsiService } from '../corsi.service';
+import { Materia } from '../materia';
 
 @Component({
   selector: 'app-recensione-materia',
@@ -12,11 +14,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './recensione-materia.component.html',
   styleUrl: './recensione-materia.component.scss'
 })
-export class RecensioneMateriaComponent {
+export class RecensioneMateriaComponent  implements OnInit{
+  
   fb = inject(FormBuilder);
   authService=inject(AuthService);
   servizioRecensione = inject(RecensioneService);
   router = inject(Router);
+  corsiService = inject(CorsiService);
 
   form = this.fb.nonNullable.group({
     materia_id: ['', Validators.required],
@@ -25,6 +29,13 @@ export class RecensioneMateriaComponent {
   });
 
   erroreRecensione: string | null = null;
+  materie: Materia[] = [];
+
+  ngOnInit(): void {
+    this.corsiService.getMaterie().subscribe(materie => {
+      this.materie = materie;
+    });
+  }
 
   onSubmit(): void {
     const datiRecensione = {

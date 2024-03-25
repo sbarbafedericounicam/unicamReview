@@ -5,10 +5,15 @@
 
     <div *ngIf="authService.currentUserSig()" class="col-md-6">
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-5">
-        <div class="form-group">
-          <label for="corso_di_studio_id" class="fw-bold">Corso</label>
-          <input type="number" class="form-control" id="corso_di_studio_id" placeholder="Inserisci ID Corso" formControlName="corso_di_studio_id">
-        </div>
+
+        <div class="form-group mt-3">
+        <label for="testo" class="fw-bold">Corso</label>
+        <select formControlName="corso_di_studio_id">
+          <option *ngFor="let corso of corsi" [ngValue]="corso.id">
+            {{ corso.nome }}
+          </option>
+        </select>
+      </div>
 
         <div class="form-group mt-3">
           <label for="voto" class="fw-bold">Voto</label>

@@ -1,0 +1,30 @@
+<p class="h3 text-center">Elimina Corso</p>
+
+@if(!admin || admin.isAdmin===false) {
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="row justify-content-center">
+        <div class="alert alert-warning">
+          <p class="h5 text-center">Questa funzione è riservata agli amministratori</p>
+      </div>
+    </div>
+  </div>
+  </div>
+}
+
+@if(admin.isAdmin===true){
+<ul class="list-group">
+    @for (corso of corsi; track $index){
+        <li class="list-group-item" (click)="eliminaCorso(corso.id)">
+            {{corso.nome}}
+        </li>
+    }
+    <div *ngIf="erroreEliminaCorso" class="alert alert-danger mt-3" role="alert">
+        <p class="text-white">{{ erroreEliminaCorso }}</p>
+    </div>
+</ul>
+}
+
+
+
+ 

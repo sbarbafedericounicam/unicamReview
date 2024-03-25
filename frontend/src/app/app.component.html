@@ -14,7 +14,7 @@
       <span class="navbar-brand">
         <a routerLink="/recensione-corso"  class="navbar-brand">Recensisci corso</a>
         <a routerLink="/recensione-materia"  class="navbar-brand">Recensisci materia</a></span>
-        {{authService.currentUserSig()?.username}}
+        <a routerLink="/profilo"  class="navbar-brand">{{authService.currentUserSig()?.username}}</a>
         <span (click)="logout()" class="navbar-brand">Logout</span>
     }
 </nav>

@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { RecensioneService } from '../recensione.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CorsiService } from '../corsi.service';
+import { Corso } from '../corso';
 
 
 @Component({
@@ -13,11 +15,13 @@ import { Router } from '@angular/router';
   templateUrl: './recensione-corso.component.html',
   styleUrl: './recensione-corso.component.scss'
 })
-export class RecensioneCorsoComponent {
+export class RecensioneCorsoComponent implements OnInit {
+  
   fb = inject(FormBuilder);
   authService=inject(AuthService);
   servizioRecensione = inject(RecensioneService);
   router = inject(Router);
+  corsiService = inject(CorsiService);
 
   form = this.fb.nonNullable.group({
     corso_di_studio_id: ['', Validators.required],
@@ -26,7 +30,14 @@ export class RecensioneCorsoComponent {
   });
 
   erroreRecensione: string | null = null;
+  corsi: Corso[] = [];
 
+  ngOnInit(): void {
+    this.corsiService.getCorsi().subscribe(corsi => {
+      this.corsi = corsi;
+    });
+  }
+  
   onSubmit(): void {
     const datiRecensione = {
       corso_di_studio_id: parseInt(this.form.get('corso_di_studio_id')?.value ?? ''),

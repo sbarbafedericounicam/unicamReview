@@ -5,9 +5,14 @@
 
     <div *ngIf="authService.currentUserSig()" class="col-md-6">
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-5">
-        <div class="form-group">
-          <label for="materia_id" class="fw-bold">Materia</label>
-          <input type="number" class="form-control" id="materia_id" placeholder="Inserisci ID Materia" formControlName="materia_id">
+        
+        <div class="form-group mt-3">
+          <label for="testo" class="fw-bold">Materie</label>
+          <select formControlName="materia_id">
+            <option *ngFor="let materia of materie" [ngValue]="materia.id">
+              {{ materia.nome }}
+            </option>
+          </select>
         </div>
 
         <div class="form-group mt-3">

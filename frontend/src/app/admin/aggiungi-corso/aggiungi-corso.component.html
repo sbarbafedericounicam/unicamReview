@@ -1,0 +1,56 @@
+<p class="h3 text-center">Aggiungi Corso</p>
+
+@if(!admin || admin.isAdmin===false){
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="row justify-content-center">
+        <div class="alert alert-warning">
+          <p class="h5 text-center">Questa funzione è riservata agli amministratori</p>
+      </div>
+    </div>
+  </div>
+  </div>
+}
+
+
+  @if(admin.isAdmin===true){
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+
+      <div *ngIf="authService.currentUserSig()" class="col-md-6">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-5">
+          <div class="form-group">
+            <label for="corso_di_studio_id" class="fw-bold">Nome</label>
+            <input type="text" class="form-control" id="nome" placeholder="Inserisci nome Corso" formControlName="nome">
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="voto" class="fw-bold">Durata</label>
+            <input type="number" class="form-control" id="durata" placeholder="Inserisci Durata" formControlName="durata">
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="testo" class="fw-bold">Descrizione</label>
+            <textarea type="text" class="form-control" id="descrizione" placeholder="Scrivi la Descrizione" formControlName="descrizione" rows="5"></textarea>
+          </div>
+
+          <div class="form-group mt-3">
+            <label for="voto" class="fw-bold">Immagine</label>
+            <input type="text" class="form-control" id="immagine" placeholder="Inserisci Immagine" formControlName="immagine">
+          </div>
+
+          <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-primary">Pubblica Corso</button>
+          </div>
+
+          <div *ngIf="erroreNuovoCorso" class="alert alert-danger mt-3" role="alert">
+            <p class="text-white">{{ erroreNuovoCorso }}</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+
+

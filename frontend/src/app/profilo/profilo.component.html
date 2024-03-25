@@ -1,0 +1,71 @@
+
+<div *ngIf="authService.currentUserSig() === null" class="col-md-6">
+    <div class="alert alert-warning" role="alert">
+      <h1 class="text-center">Effettua l'Accesso/Registrazione per vedere il tuo profilo</h1>
+      <div class="d-flex justify-content-center mt-3">
+        <a routerLink="/login" class="btn btn-success">Accedi</a>
+        <a routerLink="/register" class="btn btn-info">Registrati</a>
+      </div>
+    </div>
+</div>
+@if(authService.currentUserSig()){
+    <h5 class="mb-4">Username:{{authService.currentUserSig()?.username}}</h5><hr>
+    <h5 class="mb-4">email:{{ authService.currentUserSig()?.email}}</h5><hr>
+    @if(admin.isAdmin===false){
+        <h5 class="mb-4">Ruolo: Studente</h5>
+    }
+
+    @if (admin.isAdmin === true) {
+        <h5 class="mb-4">Ruolo: Admin</h5>
+        <hr>
+      
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-6">
+              <a href="corsi/nuovo" class="btn btn-primary btn-block">Crea Corso</a>
+            </div>
+            <div class="col-md-6">
+              <a href="corsi/elimina" class="btn btn-danger btn-block">Elimina Corso</a>
+            </div>
+          </div>
+      
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <a href="materie/nuovo" class="btn btn-primary btn-block">Crea Materia</a>
+            </div>
+            <div class="col-md-6">
+              <a href="materie/elimina" class="btn btn-danger btn-block">Elimina Materia</a>
+            </div>
+          </div>
+        </div>
+      
+        <hr>
+      }
+
+<h1 class="mb-4">Recensioni Corso</h1>
+  <div class="card">
+    <div class="card-body">
+      <div *ngFor="let recensione of profilo?.recensioniCorso" class="mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div><strong>{{recensione.nome_corso}} </strong><span class="badge bg-primary rounded-pill">{{recensione.Voto}}/5</span></div>  
+        </div>
+        <div>{{recensione.testo}}</div><hr>
+      </div>
+    </div>
+  </div>
+
+  <h1 class="mb-4">Recensioni Materie</h1>
+  <div class="card">
+    <div class="card-body">
+      <div *ngFor="let recensione of profilo?.recensioniMateria" class="mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div><strong>{{recensione.nome_materia}} </strong><span class="badge bg-primary rounded-pill">{{recensione.Voto}}/5</span></div>  
+        </div>
+        <div>{{recensione.testo}}</div><hr>
+      </div>
+    </div>
+  </div>
+}
+
+
+  

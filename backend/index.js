@@ -49,6 +49,7 @@ app.get('/api/corsi', (req, res) => {
   });
 });
 
+
 app.get('/api/corso-detail/:id', (req, res) => {
   const corsoId = parseInt(req.params.id);
 
@@ -120,6 +121,20 @@ app.get('/api/corso-detail/:id', (req, res) => {
       }
   });
 });
+
+app.get('/api/materie', (req, res) => {
+  const query = "SELECT * FROM Materie ORDER BY nome ASC";
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Errore durante il recupero delle materie:', err);
+      return res.status(500).send('Errore durante il recupero delle materie');
+    }
+
+    res.status(200).send(results);
+  });
+});
+
 
 app.get('/api/materia-detail/:id', (req, res) => {
   const materiaId = parseInt(req.params.id);
@@ -247,8 +262,17 @@ app.post('/api/recensione-materia', (req, res) => {
   });
 });
 
-app.post('/api/corsi/nuovo', (req, res) => {  //da migliorare e usare su angular
+app.post('/api/corsi/nuovo', (req, res) => {
   const { nome, durata, descrizione, immagine } = req.body;
+
+  if (!nome || !durata) {
+    return res.status(400).send('Mancano dati obbligatori');
+  }
+
+  if (durata>8) {
+    return res.status(400).send('Durata troppo lunga');
+  }
+
   const query = `
     INSERT INTO Corsi_di_Studio (nome, durata, descrizione, immagine)
     VALUES (?, ?, ?, ?)
@@ -260,9 +284,92 @@ app.post('/api/corsi/nuovo', (req, res) => {  //da migliorare e usare su angular
       return res.status(500).send('Errore durante la creazione del corso');
     }
 
-    res.status(201).send('Corso di studi creato con successo');
+    res.status(201).send('Corso di studio creato con successo');
   });
 });
+
+
+app.delete('/api/corsi/elimina/:id', (req, res) => {
+  const corsoId = parseInt(req.params.id);
+
+  // Controllo esistenza
+  const query = "SELECT COUNT(*) FROM Corsi_di_Studio WHERE id = ?";
+  connection.query(query, [corsoId], (err, results) => {
+    if (err) {
+      console.error('Errore durante il controllo del corso:', err);
+      return res.status(500).send('Errore durante il controllo del corso');
+    }
+
+    const count = results[0]['COUNT(*)'];
+    if (count === 0) {
+      return res.status(404).send('Corso di studio non trovato');
+    }
+
+    const query = "DELETE FROM Corsi_di_Studio WHERE id = ?";
+    connection.query(query, [corsoId], (err) => {
+      if (err) {
+        console.error('Errore durante leliminazione del corso:', err);
+        return res.status(500).send('Errore durante leliminazione del corso');
+      }
+
+      res.status(200).send('Corso di studio eliminato con successo');
+    });
+  });
+});
+
+app.post('/api/materie/nuovo', (req, res) => {
+  const { nome, anno, CFU, descrizione, corso_di_studio_id } = req.body;
+
+  if (!nome || !anno || !CFU || !corso_di_studio_id) {
+    return res.status(400).send('Mancano dati obbligatori');
+  }
+
+  const query = `
+    INSERT INTO Materie (nome, anno, CFU, descrizione, corso_di_studio_id)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+
+  connection.query(
+    query,
+    [nome, anno, CFU, descrizione, corso_di_studio_id],
+    (err) => {
+      if (err) {
+        console.error('Errore durante la creazione della materia:', err);
+        return res.status(500).send('Errore durante la creazione della materia');
+      }
+
+      res.status(201).send('Materia creata con successo');
+    }
+  );
+});
+
+app.delete('/api/materie/elimina/:id', (req, res) => {
+  const materiaId = parseInt(req.params.id);
+
+  const query = "SELECT COUNT(*) FROM Materie WHERE id = ?";
+  connection.query(query, [materiaId], (err, results) => {
+    if (err) {
+      console.error('Errore durante il controllo della materia:', err);
+      return res.status(500).send('Errore durante il controllo della materia');
+    }
+
+    const count = results[0]['COUNT(*)'];
+    if (count === 0) {
+      return res.status(404).send('Materia non trovata');
+    }
+
+    const query = "DELETE FROM Materie WHERE id = ?";
+    connection.query(query, [materiaId], (err) => {
+      if (err) {
+        console.error('Errore durante leliminazione della materia:', err);
+        return res.status(500).send('Errore durante leliminazione della materia');
+      }
+
+      res.status(200).send('Materia eliminata con successo');
+    });
+  });
+});
+
 
 app.get('/api/stats', (req, res) => {
   let statistiche = {};
@@ -359,6 +466,95 @@ app.get('/api/stats', (req, res) => {
     });
   });
 });
+
+app.get('/api/is-admin/:email', (req, res) => {
+  const email = req.params.email;
+
+  if (!email) {
+    return res.status(400).send('Parametro email non valido');
+  }
+
+  const query = 'SELECT COUNT(*) AS is_admin FROM Admins WHERE email = ?';
+  connection.query(query, [email], (err, results) => {
+    if (err) {
+      console.error('Errore durante la verifica dell\'amministratore:', err);
+      return res.status(500).send('Errore interno del server');
+    }
+
+    const count = results[0].is_admin;
+    const isAdmin = count === 1;
+
+    res.status(200).json({ isAdmin });
+  });
+});
+
+app.get('/api/profilo/:email', (req, res) => {
+  const email = req.params.email;
+
+  if (!email) {
+    return res.status(400).send('Parametro email non valido');
+  }
+
+  const queryRecensioniCorso = `
+    SELECT
+      rc.testo,
+      rc.Voto,
+      c.nome AS nome_corso
+    FROM
+      Recensioni_Corso rc
+    INNER JOIN
+      Corsi_di_Studio c ON c.id = rc.corso_di_studio_id
+    WHERE
+      rc.email = ?
+  `;
+
+  const queryRecensioniMateria = `
+    SELECT
+      rm.testo,
+      rm.Voto,
+      m.nome AS nome_materia
+    FROM
+      Recensioni_Materia rm
+    INNER JOIN
+      Materie m ON m.id = rm.materia_id
+    WHERE
+      rm.email = ?
+  `;
+
+  const queryIsAdmin = 'SELECT COUNT(*) AS is_admin FROM Admins WHERE email = ?';
+
+  connection.query(queryRecensioniCorso, [email], (err, recensioniCorso) => {
+    if (err) {
+      console.error('Errore durante il recupero delle recensioni del corso:', err);
+      return res.status(500).send('Errore durante il recupero delle recensioni del corso');
+    }
+
+    connection.query(queryRecensioniMateria, [email], (err, recensioniMateria) => {
+      if (err) {
+        console.error('Errore durante il recupero delle recensioni delle materie:', err);
+        return res.status(500).send('Errore durante il recupero delle recensioni delle materie');
+      }
+
+      connection.query(queryIsAdmin, [email], (err, results) => {
+        if (err) {
+          console.error('Errore durante il controllo se lutente è un amministratore:', err);
+          return res.status(500).send('Errore durante il controllo se lutente è un amministratore');
+        }
+
+        const isAdmin = results[0].is_admin === 1;
+
+        const profilo = {
+          recensioniCorso,
+          recensioniMateria,
+          isAdmin,
+        };
+
+        res.status(200).json(profilo);
+      });
+    });
+  });
+});
+
 
 app.listen(3000, () => {
   console.log('Server in ascolto sulla porta 3000');
