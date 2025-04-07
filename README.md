@@ -34,18 +34,5 @@ Ovviamente l'utente non potrà recensire più di una volta una stessa materia/co
 
 L'utente può vedere statistiche riguardo all'università, la lista dei corsi, la pagina per ogni corso (dettagli, materie, recensioni del corso fatte dagli utenti), la pagina per ogni materia (dettagli e recensioni del corso fatte dagli utenti). Registrandosi/accedendo potrà effettuare delle recensioni (voto 1-5 e testo al corso di studio o alle materie del corso di studio che frequenta).
 
-#### Scelte tecniche:
-
-Il database è stato realizzato in MySQL tramite MySQL Workbench, il backend in Express.js (Node.js), il frontend in Angular. Il frontend e il backend sono stati sviluppati utilizzando metodologie quanto più coerenti possibile con quanto mostrato durante le lezioni. Per la registrazione e l'accesso, il sottoscritto ha scelto di utilizzare Firebase, poiché intere giornate cercando di implementare un'autenticazione usando il JWT dal backend al frontend si sono rivelate infruttuose.
-
-#### Future modifiche:
-
-- Aggiunta della pagina personale dell'utente dove poter vedere/eliminare le proprie recensioni.
-- Possibilità di fare recensioni del corso e delle materie direttamente dalla pagina di dettaglio del corso/ delle materie, evitando di dover mettere manualmente l'id del corso/materia (cosa molto brutta da sistemare)
-- Aggiunta del ruolo di admin, con una pagina personale dove potere creare/modificare/eliminare corsi e materie (non assicurato).
-- Video dimostrativo.
-- Pubblicazione dello script per la creazione delle tabelle nel DB e delle insert di esempio per corsi, materie, recensioni...
-- PWA (dipende dalle tempistiche).
-- Deploy su qualche servizio (dipende dalle tempistiche / non assicurato).
 
 
